@@ -8,6 +8,7 @@ date: 04-10-2020
 > Написать запрос, возвращающий преподавателей у которых есть кураторы. Результат должен содержать одно поле teacher_name, в котором содержится Фамилия и Имя преподавателя через пробел.
 
 -- Code1:
+
     SELECT (first_name || ' ' || last_name) AS teacher_name
     FROM Teachers
     WHERE curator_id IS NOT NULL;
@@ -18,6 +19,7 @@ date: 04-10-2020
 > 2. Выбрать преподавателей, которые читают лекции больше чем на одном факультете.
 
 -- Code2:
+
     SELECT DISTINCT (first_name || ' ' || last_name) AS teacher_name
     FROM Teachers AS t
         INNER JOIN Teacher_Course_Faculty AS tf
@@ -31,6 +33,7 @@ date: 04-10-2020
 > 3. Написать запрос, который возвращает фамилию студента, название курсов, которые читаются на его факультете и оценку студента по курсу, если он его сдавал. Если студент не сдавал курс, то вместо оценки вывести null. Следует учитывать, что студент может сдавать экзамен по курсу, который не читается на его факультете, а также, один курс на факультете может читаться различными преподавателями.
 
 -- Code3:
+
     SELECT last_name, course_name, mark
     From Students as s
   	LEFT join Students_marks as m
@@ -46,7 +49,8 @@ date: 04-10-2020
 > 4. Написать запрос, который возвращает фамилию студента, его имя и средний бал, по результатам сданных экзаменов, для студентов, средний бал которых больше или равен 4. Результат отсортировать по убыванию среднего балла и по фамилии студента.
 
 -- Code4:
-        SELECT last_name, first_name, AVG(mark) as mark_avg
+
+    SELECT last_name, first_name, AVG(mark) as mark_avg
     From Students as s
         LEFT join Students_marks as m
         ON	m.student_id=s.student_id
@@ -59,6 +63,7 @@ date: 04-10-2020
 > 5.  Вывести список факультетов и для каждого факультета название курса, который имеет наименьшую продолжительность.
 
 -- Code5:
+
     SELECT faculty_name, course_name
     FROM Faculties as f
     INNER JOIN Teacher_Course_Faculty as tcf
@@ -66,7 +71,7 @@ date: 04-10-2020
     INNER JOin Courses as c
         ON c.course_id=tcf.course_id
     GROUP BY faculty_name
-    HAVING duration = MIN(duration)
+    HAVING duration = MIN(duration);
 
 ## Task 6
 
@@ -74,6 +79,7 @@ date: 04-10-2020
 геометрии.
 
 -- Code6:
+
     CREATE TEMP TABLE IF NOT EXISTS tbl_a AS
         SELECT s.student_id, last_name, mark as mark_a
         From Students as s
@@ -96,7 +102,7 @@ date: 04-10-2020
         FROM tbl_a
         INNER JOIN tbl_g
         ON tbl_g.student_id=tbl_a.student_id
-        WHERE mark_a>mark_g
+        WHERE mark_a>mark_g;
 
 не самое элегантное решение, возможно стоило сгруппировать по предмету и оставить Алгебру и Геометрию через условие
 
@@ -105,6 +111,7 @@ date: 04-10-2020
 > Написать запрос, который вернет название курса и название факультета, для курсов, которые читаются только на одном факультете и не читаются на других факультетах.
 
 -- Code7:
+
     SELECT course_name, faculty_name
     FROM (
         SELECT course_name, faculty_name, COUNT(*)
